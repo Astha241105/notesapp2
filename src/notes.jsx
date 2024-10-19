@@ -1,0 +1,3 @@
+function notesbox(){
+    <textarea></textarea>
+}
