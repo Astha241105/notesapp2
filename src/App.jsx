@@ -29,10 +29,6 @@ function App() {
     setSearch(''); 
   }
 
-  function createNewNote() {
-    setTitle('');
-    setContent('');
-  }
 
   function update(d) {
     setTitle(d);
@@ -56,24 +52,22 @@ function App() {
   };
 
   return (
-    <>
-      <button onClick={createNewNote} id="adding">
-        Add a new note
-      </button>
-      <div id="container">
+     <diV id="container">
+      <div id="container1">
         <input
-          placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
-        <textarea rows="4" cols="8"  value={content} onChange={(e) => setContent(e.target.value)}/>
-        <button onClick={saving}>Save</button>
-        <input placeholder="Search for your notes" value={search} onChange={filter}/>
-        <ul>
+          placeholder="Title" value={title} id="title" onChange={(e) => setTitle(e.target.value)}/>
+        <textarea rows="4" cols="8" id="content" value={content} onChange={(e) => setContent(e.target.value)}/>
+        <button onClick={saving} id="save">Save</button></div>
+        <div id="container2">
+        <input placeholder="Search for your notes" id="search"value={search} onChange={filter}/>
+        <ul id="noteslist">
           {all.map((note) => (
             <li key={note.t} onClick={() => update(note.t)}>
-              <div>{note.t}</div>
+             <b><div id="div1">{note.t}</div></b> 
               <div>{note.c}</div>
             </li>))}
-        </ul>
-      </div> </> );
+        </ul></div></diV>
+       );
 }
 
 export default App;

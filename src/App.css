@@ -6,30 +6,113 @@
   color:#FFE1FF
 }
 #container{
-  border-radius:10px;
   display:flex;
-  height:75%vh;
-  flex-direction: column;
+  flex-wrap:wrap;
+  height:100vh;
+  width:100vw;
   justify-content: center;
   align-items: center;
+  padding:20px;
+
 }
-button {
-  padding: 10px;
-  font-size: 16px;
-  border: none;
+#container1{
+  background-color:#FFF5CD;
+  width:40%;
+  height:75%;
+  min-width:500px;
+  display:flex;
+  flex-direction: column;
+  margin-top:20px;
+  justify-content: center;
+  align-items: center;
+  border-radius:10px;
+  margin:10px;
+}
+#container2{
+  background-color:#FFF5CD;
+  width:40%;
+  min-width:500px;
+  height:75%;
+  display:flex;
+  flex-direction: column;
+  margin-top:20px;
+  justify-content: center;
+  align-items: center;
+  border-radius:10px;
+  margin:10px;
+}
+
+#title{
+  width:90% ;
+  height:10%;
+  border:none;
+  background-color: #433878;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  font-size:2em;
+}
+#save {
+  border:none;
+  width:90%;
+  height:10%;
+  margin-top:1em;
+  font-size:1.5em;
+  background-color:#E4B1F0;
   border-radius: 5px;
   cursor: pointer;
   justify-content:center;
 }
 
 textarea {
-  margin-top: 10px;
-  width: 75%;
-  height:75%;
-  padding: 8px;
+  border-bottom-left-radius:10px;
+  border-bottom-right-radius:10px;
+  width: 90%;
+  height:60%;
   box-sizing: border-box;
   border:none;
-  border-radius: 10px;
+  resize:none;
+  background-color: #433878
+}
+#search{
+  border:none;
+  width:90%;
+  height:10%;
+  margin-top:1em;
+  font-size:1.5em;
+  background-color:#E4B1F0;
+  border-radius: 5px;
+  cursor: pointer;
+  justify-content:center;
+}
+#noteslist{
+  border-bottom-left-radius:10px;
+  border-bottom-right-radius:10px;
+  width: 90%;
+  height:60%;
+  box-sizing: border-box;
+  border:none;
+  resize:none;
+  background-color: #FFF5CD
+
+}
+li{
+  background-color: #433878;
+  padding:10px;
+  margin:10px;
+  border-radius:5px;
+  list-style-type: none;
+
+}
+#div1{
+  font-style:italic;
+}
+li div{
+  border-radius:5px;
+  height:20px;
+  width: 90%;
+  height:60%;
+  box-sizing: border-box;
+  border:none;
   resize:none;
   background-color: #433878
 }
