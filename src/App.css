@@ -2,7 +2,16 @@
   margin:0;
   padding :0;
   box-sizing: border-box;
-  background-color: #024CAA;
+  background-color: #7E60BF;
+  color:#FFE1FF
+}
+#container{
+  border-radius:10px;
+  display:flex;
+  height:75%vh;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 button {
   padding: 10px;
@@ -15,11 +24,12 @@ button {
 
 textarea {
   margin-top: 10px;
-  width: 200px;
+  width: 75%;
+  height:75%;
   padding: 8px;
   box-sizing: border-box;
   border:none;
   border-radius: 10px;
   resize:none;
-  background-color: #091057;
+  background-color: #433878
 }
