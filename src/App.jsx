@@ -20,13 +20,23 @@ function App() {
   }, []);
 
   function saving() {
+    if(title==''){
+      alert("Give title");
+    }
+    else if(content==''){
+      alert("Give content");
+    }
+    else if(notecount.find(n=>n.t==title)){
+      alert("Notes with given title already exist");
+    }
+    else{
     localStorage.setItem(title, content);
     const updatedNotecount = [...notecount, { t: title, c: content }];
     setNotecount(updatedNotecount);
     setALL(updatedNotecount);
     setTitle('');
     setContent('');
-    setSearch(''); 
+    setSearch(''); }
   }
 
 
@@ -52,7 +62,7 @@ function App() {
   };
 
   return (
-     <diV id="container">
+     <div id="container">
       <div id="container1">
         <input
           placeholder="Title" value={title} id="title" onChange={(e) => setTitle(e.target.value)}/>
@@ -66,7 +76,7 @@ function App() {
              <b><div id="div1">{note.t}</div></b> 
               <div>{note.c}</div>
             </li>))}
-        </ul></div></diV>
+        </ul></div></div>
        );
 }
 
