@@ -5,6 +5,8 @@ function App() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [notecount, setNotecount] = useState([]);
+  const [all,setALL]=useState([]);
+  const [search,setSearch]=useState('');
 
   useEffect(() => {
     const arr = [];
@@ -12,12 +14,14 @@ function App() {
       arr.push(localStorage.key(i));
     }
     setNotecount(arr.map((key) => ({ t: key, c: localStorage.getItem(key) })));
-  }, []);
+    setALL(notecount);
+  }, [title]);
 
   function saving() {
     localStorage.setItem(title, content);
     setNotecount([...notecount, { t: title, c: content }]);
     console.log([...notecount, { t: title, c: content }]);
+    setALL(notecount);
   }
 
   function createNewNote() {
@@ -30,7 +34,12 @@ function App() {
     setContent(localStorage.getItem(d));
     localStorage.removeItem(d);
   }
-
+  function searching(search) {
+    const filteredNotes = notecount.filter(note => 
+      note.t.toLowerCase().includes(search.toLowerCase()) 
+    );
+    setNotecount(filteredNotes); 
+  }
   return (
     <>
       <button onClick={createNewNote} id="adding">
@@ -49,6 +58,8 @@ function App() {
           onChange={(e) => setContent(e.target.value)}
         />
         <button onClick={saving}>Save</button>
+        <input placeholder="Search for your notes" value={search} onChange={(e) => {
+        const value = e.target.value; setSearch(value);  searching(value);  }} ></input>
         <ol>
           {notecount.map((note) => (
             <li key={note.t} onClick={() => update(note.t)}>
