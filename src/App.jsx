@@ -17,7 +17,7 @@ function App() {
     }
     setNotecount(arr);
     setALL(arr);
-  }, []);
+  }, [title]);
 
   function saving() {
     if(title==''){
@@ -25,9 +25,6 @@ function App() {
     }
     else if(content==''){
       alert("Give content");
-    }
-    else if(notecount.find(n=>n.t==title)){
-      alert("Notes with given title already exist");
     }
     else{
     localStorage.setItem(title, content);
