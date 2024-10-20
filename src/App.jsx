@@ -1,20 +1,29 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState([]);
-  const createNewNote=()=>{
-    const abc=[...count,[]] //taking all elements 
-    setCount(abc)
+  const [title,setTitle]=useState('');
+  const [content,setcontent]=useState('');
+  function saving(){
+    localStorage.setItem(title,content);
   }
-
-  return (
+  function createNewNote(){
+      setTitle('');
+      setcontent('');
+  } 
+   return (
     <>
-    <button onClick={createNewNote}>click me</button>
-    {count.map((data,i)=>{
-      return(
-      <textarea rows="4" cols="8" /> )})}
-  </>
+      <button onClick={createNewNote} id="adding">
+        Add a new note
+      </button>
+          <div>
+          <input placeholder="Title"  value={title} onChange={(e)=>setTitle(e.target.value)}></input>
+          <textarea  rows="4" cols="8" value={content}  onChange={(e)=>setcontent(e.target.value) }/>
+          <button onClick={saving}>Save</button>
+          </div>
+        
+    </>
   );
-  }
+}
 
-export default App
+export default App;
