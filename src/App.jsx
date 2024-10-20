@@ -5,23 +5,28 @@ function App() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [notecount, setNotecount] = useState([]);
-  const [all,setALL]=useState([]);
-  const [search,setSearch]=useState('');
+  const [all, setALL] = useState([]);
+  const [search, setSearch] = useState('');
 
+  
   useEffect(() => {
     const arr = [];
     for (let i = 0; i < localStorage.length; i++) {
-      arr.push(localStorage.key(i));
+      const key = localStorage.key(i);
+      arr.push({ t: key, c: localStorage.getItem(key) });
     }
-    setNotecount(arr.map((key) => ({ t: key, c: localStorage.getItem(key) })));
-    setALL(notecount);
-  }, [title]);
+    setNotecount(arr);
+    setALL(arr);
+  }, []);
 
   function saving() {
     localStorage.setItem(title, content);
-    setNotecount([...notecount, { t: title, c: content }]);
-    console.log([...notecount, { t: title, c: content }]);
-    setALL(notecount);
+    const updatedNotecount = [...notecount, { t: title, c: content }];
+    setNotecount(updatedNotecount);
+    setALL(updatedNotecount);
+    setTitle('');
+    setContent('');
+    setSearch(''); 
   }
 
   function createNewNote() {
@@ -34,12 +39,22 @@ function App() {
     setContent(localStorage.getItem(d));
     localStorage.removeItem(d);
   }
-  function searching(search) {
-    const filteredNotes = notecount.filter(note => 
-      note.t.toLowerCase().includes(search.toLowerCase()) 
-    );
-    setNotecount(filteredNotes); 
-  }
+
+  const filter = (e) => {
+    const keyword = e.target.value;
+
+    if (keyword !== '') {
+      const results = notecount.filter((note) =>
+        note.t.toLowerCase().startsWith(keyword.toLowerCase())
+      );
+      setALL(results);
+    } else {
+      setALL(notecount);
+    }
+
+    setSearch(keyword);
+  };
+
   return (
     <>
       <button onClick={createNewNote} id="adding">
@@ -47,30 +62,18 @@ function App() {
       </button>
       <div id="container">
         <input
-          placeholder="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <textarea
-          rows="4"
-          cols="8"
-          value={content}
-          onChange={(e) => setContent(e.target.value)}
-        />
+          placeholder="Title" value={title} onChange={(e) => setTitle(e.target.value)}/>
+        <textarea rows="4" cols="8"  value={content} onChange={(e) => setContent(e.target.value)}/>
         <button onClick={saving}>Save</button>
-        <input placeholder="Search for your notes" value={search} onChange={(e) => {
-        const value = e.target.value; setSearch(value);  searching(value);  }} ></input>
-        <ol>
-          {notecount.map((note) => (
+        <input placeholder="Search for your notes" value={search} onChange={filter}/>
+        <ul>
+          {all.map((note) => (
             <li key={note.t} onClick={() => update(note.t)}>
               <div>{note.t}</div>
               <div>{note.c}</div>
-            </li>
-          ))}
-        </ol>
-      </div>
-    </>
-  );
+            </li>))}
+        </ul>
+      </div> </> );
 }
 
 export default App;
