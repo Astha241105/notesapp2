@@ -40,7 +40,7 @@
   align-items: center;
   border-radius:10px;
   margin:10px;
-  overflow:scroll;
+  overflow-y:scroll;
 }
 
 #title{
@@ -107,13 +107,26 @@ li{
 #div1{
   font-style:italic;
 }
+.operation{
+  border:none;
+  height:25px;
+  width:50px;
+  font-size:15px;
+  border-radius:5px;}
+#buttons{
+  display:flex;
+  justify-content: space-between;
+}
+
 li div{
   border-radius:5px;
   height:20px;
   width: 90%;
+  font-size:20px;
   height:60%;
   box-sizing: border-box;
   border:none;
   resize:none;
-  background-color: #433878
+  background-color: #433878;
+  overflow:hidden;
 }

@@ -57,6 +57,12 @@ function App() {
 
     setSearch(keyword);
   };
+function del(noteTitle) {
+  localStorage.removeItem(noteTitle); 
+  const updatedNotecount = notecount.filter(note => note.t !== noteTitle);
+  setNotecount(updatedNotecount);
+  setALL(updatedNotecount);
+}
 
   return (
      <div id="container">
@@ -69,9 +75,10 @@ function App() {
         <input placeholder="Search for your notes" id="search"value={search} onChange={filter}/>
         <ul id="noteslist">
           {all.map((note) => (
-            <li key={note.t} onClick={() => update(note.t)}>
-             <b><div id="div1">{note.t}</div></b> 
-              <div>{note.c}</div>
+            <li key={note.t} >
+             <b><div id="div1">{note.t}</div></b><div id="buttons">
+             <button onClick={() => update(note.t)} className="operation">Open</button>
+              <button onClick={() => del(note.t)} className="operation">Delete</button></div>
             </li>))}
         </ul></div></div>
        );
