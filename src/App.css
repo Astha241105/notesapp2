@@ -3,7 +3,8 @@
   padding :0;
   box-sizing: border-box;
   background-color: #7E60BF;
-  color:#FFE1FF
+  color:#FFE1FF;
+  overflow-x:hidden;
 }
 #container{
   display:flex;
@@ -116,6 +117,10 @@ li{
 #buttons{
   display:flex;
   justify-content: space-between;
+}
+#search ::placeholder{
+  color: #FFE1FF;
+  opacity: 1;
 }
 
 li div{
