@@ -9,8 +9,8 @@ const Login = () => {
     email: '',
     password: '',
   });
-  const [user, setUser] = useState(null); // Add user state
-  const [error, setError] = useState(''); // Add error state
+  const [user, setUser] = useState(null); 
+  const [error, setError] = useState(''); 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -20,29 +20,37 @@ const Login = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {  
     e.preventDefault();
 
     if (formData.email && formData.password) {
-      axios.post("https://notes-backend-x9sp.onrender.com/user/login", formData, { withCredentials: true })
-        .then((response) => {
-          console.log('Response:', response.data);
-          if (response.data.success) {
-            setUser(response.data.user); // Store user info in state
-            navigate('/notes');
-          }
-        })
-        .catch((error) => {
-          if (error.response) {
-            console.error('Error during login:', error.response.data);
-            setError('Login failed. Please check your credentials.'); // Set error message
-          }
-        });
-    } else {
-      console.log('Email and password are required');
+      try {
+        const response = await axios.post('https://notes-backend-x9sp.onrender.com/user/login', {
+          email: formData.email,  
+          password: formData.password  
+        }, { withCredentials: true });
+  
+        console.log(response.data);
+  
+        if (response.data.success) {
+          localStorage.setItem('sessionid', response.data.data.sessionId);    
+          console.log('Session ID:', response.data.data.sessionId);    
+          navigate('/notes');  
+        } else {
+          setError('Login failed: No token received');
+        }
+      } catch (err) {
+        console.error('Error during login:', err);
+        if (err.response) {
+          setError(err.response.data?.message || 'Invalid credentials');
+        } else if (err.request) {
+          setError('Network error. Please try again.');
+        } else {
+          setError('An error occurred. Please try again.');
+        }
+      }
     }
-  };
-
+  }; 
   return (
     <div className="login-container">
       <h2>Login</h2>
@@ -67,7 +75,7 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" id="log">Login</button>
       </form>
 
       {user && (
@@ -79,7 +87,7 @@ const Login = () => {
         </div>
       )}
 
-      {error && <p style={{ color: 'red' }}>{error}</p>} {/* Display error message */}
+      {error && <p style={{ color: 'red' }}>{error}</p>} 
     </div>
   );
 };

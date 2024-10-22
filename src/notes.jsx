@@ -6,10 +6,12 @@ function Notes() {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [notecount, setNotecount] = useState([]);
-  const [all, setAll] = useState([]);
+  const [all, setAll] = useState([]); 
   const [search, setSearch] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+
+  let sessionId = localStorage.getItem('sessionid');
 
   useEffect(() => {
     const fetchNotes = async () => {
@@ -18,14 +20,18 @@ function Notes() {
 
       try {
         const response = await axios.get("https://notes-backend-x9sp.onrender.com/notes/", {
-          withCredentials: true, 
+          withCredentials: true,
           headers: {
             'Content-Type': 'application/json',
+            'Authorization': `Bearer ${sessionId}`,
+             'Accept': "application/json",
           }
         });
-
-        setNotecount(response.data);
-        setAll(response.data);
+        console.log(response.data.data)
+        const updatedNotecount = [...notecount,  ...response.data.data];
+        setNotecount(updatedNotecount);
+        setAll(updatedNotecount);
+        console.log("notes fetched successfully");
       } catch (err) {
         console.error('Error fetching notes:', err);
         setError(err.response?.data?.message || 'Error fetching notes');
@@ -35,7 +41,7 @@ function Notes() {
     };
 
     fetchNotes();
-  }, []);
+  }, [setNotecount]);
 
   const saving = async () => {
     if (title === '' || content === '') {
@@ -43,10 +49,17 @@ function Notes() {
       return;
     }
 
-    const newNote = { title, content };
+    const newNote =   { title, description: content } ;
     try {
-      const response = await axios.post("https://notes-backend-x9sp.onrender.com/notes/", newNote, { withCredentials: true });
-      const updatedNotecount = [...notecount, { ...response.data, marked: false }];
+      const response = await axios.post("https://notes-backend-x9sp.onrender.com/notes/", newNote, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionId}`
+        }
+      });
+      console.log(response.data.data);
+      const updatedNotecount = [...notecount, response.data.data];
       setNotecount(updatedNotecount);
       setAll(updatedNotecount);
       setTitle('');
@@ -58,12 +71,12 @@ function Notes() {
     }
   };
 
-  const update = async (noteId) => {
-    const noteToUpdate = notecount.find(note => note.id === noteId);
+  const update = async (note) => {
+    const noteToUpdate = note;
     if (noteToUpdate) {
       setTitle(noteToUpdate.title);
-      setContent(noteToUpdate.content);
-      await del(noteId);
+      setContent(noteToUpdate.description);
+      await del(note);
     }
   };
 
@@ -80,10 +93,19 @@ function Notes() {
     setSearch(keyword);
   };
 
-  const del = async (noteId) => {
+  const del = async (note) => {
     try {
-      await axios.delete(`https://notes-backend-x9sp.onrender.com/notes/${noteId}`, { withCredentials: true });
-      const updatedNotecount = notecount.filter(note => note.id !== noteId);
+      sessionId = localStorage.getItem('sessionid');
+      console.log(note._id);
+      await axios.delete(`https://notes-backend-x9sp.onrender.com/notes/${note._id}`, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${sessionId}`
+        }
+      });
+      console.log("deletion successful");
+      const updatedNotecount = notecount.filter(n => n._id !== note._id);
       setNotecount(updatedNotecount);
       setAll(updatedNotecount);
     } catch (error) {
@@ -114,17 +136,14 @@ function Notes() {
       <div id="container2">
         <input placeholder="Search for your notes" id="search" value={search} onChange={filter} />
         <ul id="noteslist">
-          {all.map((note) => (
-            <li key={note.id}>
+          {Array.isArray(all) && all.map((note) => (
+            <li key={note._id}>
               <b>
                 <div id="div1" style={{ backgroundColor: note.marked ? '#E4B1F0' : '#433878' }}>{note.title} </div>
               </b>
               <div id="buttons">
-                <button onClick={() => update(note.id)} className="operation">Open</button>
-                <button onClick={() => toggleMark(note.id)} className="operation">
-                  {note.marked ? 'Unmark' : 'Mark'}
-                </button>
-                <button onClick={() => del(note.id)} className="operation">Delete</button>
+                <button onClick={() => update(note)} className="operation">Open</button>
+                <button onClick={() => del(note)} className="operation">Delete</button>
               </div>
             </li>
           ))}

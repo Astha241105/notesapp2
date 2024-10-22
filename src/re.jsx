@@ -83,7 +83,7 @@ const Newregistration = () => {
             Admin
           </label>
         </div>
-        <button type="submit">Register</button>
+        <button type="submit" id="reg">Register</button>
       </form>
 
       <p>Already registered? <Link to="/user/login">Login here</Link></p>
